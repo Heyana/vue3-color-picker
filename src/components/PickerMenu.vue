@@ -49,15 +49,7 @@
         </div>
         <div ref="rightContainer" class="ck-cp-controller-bar"
             style="display: inline-flex; justify-content: end;position: relative;">
-            <button v-if="isEyeDropperUsing && showEyeDrop" id="cp-btn-eyedropper" class="cp-btn"
-                :style="`${iconClasses.eyeDroper ? '' : 'padding: 7px;'}`" @click="$emit('onClickEyeDropper')">
-                <i v-if="iconClasses.eyeDroper" :class="iconClasses.eyeDroper"></i>
-                <svg v-else version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-                    <path
-                        d="M21.35 1.825l-6.344 6.35-0.588-0.588c-0.781-0.781-2.050-0.781-2.831 0s-0.781 2.050 0 2.831l10 10c0.781 0.781 2.050 0.781 2.831 0s0.781-2.050 0-2.831l-0.587-0.587 6.344-6.35c2.438-2.438 2.438-6.388 0-8.819s-6.387-2.438-8.819 0zM3.462 20.206c-0.938 0.938-1.462 2.212-1.462 3.538v2.65l-1.663 2.494c-0.531 0.794-0.425 1.85 0.25 2.525s1.731 0.781 2.525 0.25l2.494-1.663h2.65c1.325 0 2.6-0.525 3.537-1.462l7.544-7.544-2.831-2.831-7.544 7.544c-0.188 0.188-0.444 0.294-0.706 0.294h-2.256v-2.256c0-0.262 0.106-0.519 0.294-0.706l7.544-7.544-2.831-2.831-7.544 7.544z">
-                    </path>
-                </svg>
-            </button>
+
             <!-- NPM ARACI OLDUĞUNDA SET EDİLCEK RGB RGBA HEX -->
             <button v-if="showInputMenu" class="cp-btn" @click="onShowInputMenu" :class="isInputMenuShow ? 'active' : ''"
                 :style="`${iconClasses.inputMenu ? '' : 'padding: 7px;'}`">
@@ -129,7 +121,6 @@ defineProps({
     },
     inputType: { default: 'RGB', type: String as () => InputType, },
     gradientType: { default: 'linear', type: String },
-    isEyeDropperUsing: { default: false, type: Boolean },
     showColorList: { default: true, type: Boolean },
     showEyeDrop: { default: true, type: Boolean },
     showInputMenu: { default: true, type: Boolean },
@@ -150,7 +141,6 @@ const emits = defineEmits<{
     (e: 'onChangeMode', value: string): void,
     (e: 'onChangeInputType', value: InputType): void,
     (e: 'onDeleteColor'): void,
-    (e: 'onClickEyeDropper'): void,
     (e: 'update:angle', value: number): void,
     (e: 'update:percentageX', value: number): void,
     (e: 'update:percentageY', value: number): void,

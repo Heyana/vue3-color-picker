@@ -5,9 +5,8 @@
     <PickerMenu v-model:angle="gradientAngle.angle" v-model:percentageX="gradientAngle.percentageX" :local="local"
       :iconClasses="iconClasses" :inputType="inputType" v-model:percentageY="gradientAngle.percentageY" :mode="mode"
       :showColorList="showColorList" :showInputMenu="showInputMenu" :showEyeDrop="showEyeDrop"
-      :isEyeDropperUsing="isEyeDropperUsing" :gradientType="gradientType" @onChangeMode="setBackgroundType"
-      @onInput="setGradientBarColor" @onClickEyeDropper="handleOnClickEyeDropper" @onDeleteColor="deleteColor"
-      @onSaveColor="saveColor" @onChangeInputType="handleChangeInputType" />
+      :gradientType="gradientType" @onChangeMode="setBackgroundType" @onInput="setGradientBarColor"
+      @onDeleteColor="deleteColor" @onSaveColor="saveColor" @onChangeInputType="handleChangeInputType" />
 
 
     <GradientBar v-if="mode == 'gradient'" @onAddColor="addColor" @onMouseDown="handleGradientItemOnMouseDown" />
@@ -71,7 +70,6 @@ import OpacityBar from './OpacityBar.vue';
 import InputNumber from './InputNumber.vue';
 import { hex8ToRgba, hexToRgb, hsl2Hex, hslToRgb, parseRgb, parseRgba, rgb2Hex, rgbToHsl, rgbToHue, rgbaToHex8, rgbToHsv, hsvToRgb, hsvToHsl, cmykToRgb, rgbToCmyk } from '../core/helper/converters';
 import { Color, RGB, RGBA, Mode, ColorType, Theme, InputType, Local, IconClasses } from '../core/types/types.ts';
-import EyeDropper from '../core/types/eyedropper';
 
 
 const props = defineProps({
@@ -109,7 +107,6 @@ const localColorList = ref<string[]>([])
 
 
 
-const isEyeDropperUsing = ref(false)
 const gradientType = ref('linear')
 const gradientAngle = reactive({
   angle: 90,
@@ -721,58 +718,7 @@ const deleteColor = () => {
   }
 }
 
-const handleOnClickEyeDropper = () => {
-  const el = document.querySelector<HTMLElement>('#cp-btn-eyedropper');
-  el?.classList.add('active');
 
-  const eyeDropper = new EyeDropper();
-
-  eyeDropper
-    .open()
-    .then((result) => {
-      const { sRGBHex } = result;
-
-      const selectedItem = colorList.value.find((item) => item.select == true);
-      const val = hexToRgb(sRGBHex);
-
-      if (val) {
-        const hueVal = rgbToHue(val.r, val.g, val.b);
-
-        if (selectedItem) {
-          selectedItem.hue = hueVal;
-          selectedItem.r = val.r;
-          selectedItem.g = val.g;
-          selectedItem.b = val.b;
-        }
-
-        if (!isColorInStrip(val)) {
-          hue.value = hueVal;
-          const { rgb } = hsl2Hex(hueVal, 100, 50);
-          redrawTheCanvas(rgb);
-          const coord = findColorCoordinates();
-          if (coord) {
-            pickerPointer.value.style.left = `${coord.x}px`;
-            pickerPointer.value.style.top = `${coord.y}px`;
-          }
-        } else {
-          const coord = findColorCoordinates();
-          if (coord) {
-            pickerPointer.value.style.left = `${coord.x}px`;
-            pickerPointer.value.style.top = `${coord.y}px`;
-          }
-        }
-
-        onChangeSetToHexValue();
-        setOpacityBarColor();
-        setGradientBarColor();
-
-        el?.classList.remove('active');
-      }
-    })
-    .catch(() => {
-      el?.classList.remove('active');
-    });
-}
 
 
 const handleRGBAInput = (e: Event, type: string) => {
@@ -934,9 +880,7 @@ const handleColorItemOnClick = (color: string) => {
   }
 }
 
-if ('EyeDropper' in window) {
-  isEyeDropperUsing.value = true
-}
+
 
 const saveColor = () => {
   const status = localColorList.value.find((color) => color === hexVal.value);
