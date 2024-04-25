@@ -1,6 +1,6 @@
 {
-  "name": "@cyhnkckali/vue3-color-picker",
-  "version": "1.1.1",
+  "name": "color-picker-fork",
+  "version": "0.0.1",
   "description": "A color picker component library",
   "type": "module",
   "types": "./dist/index.d.ts",
@@ -35,10 +35,6 @@
     "gradient",
     "solid"
   ],
-  "author": {
-    "name": "Ceyhun Küçükali",
-    "email": "cyhnkckali@gmail.com"
-  },
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc && vite build",
